@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "pbjs": "pbjs -t static-module src/propagation/state.proto > src/propagation/state.proto.js",
+    "build": "gulp --gulpfile scripts/gulpfile.js",
     "lint": "eslint .",
     "test": "eslint . && nyc --reporter=lcov --reporter=text mocha",
     "tdd": "mocha --watch",
@@ -42,6 +43,11 @@
     "protobufjs": "~6.7.3"
   },
   "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
+    "browserify-wrap": "^1.0.2",
+    "bundle-collapser": "^1.2.1",
     "chai": "^3.5.0",
     "codecov": "^2.1.0",
     "eslint": "^3.19.0",
@@ -50,13 +56,24 @@
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "exorcist": "^0.4.0",
     "express": "^4.15.2",
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.8.8",
+    "gulp-if": "^2.0.2",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-util": "^3.0.8",
     "mocha": "^3.2.0",
     "nock": "^9.0.13",
+    "node-zopfli": "^2.0.2",
     "nyc": "^10.2.0",
     "proxyquire": "^1.7.11",
     "safe-buffer": "^5.0.1",
     "sinon": "^2.1.0",
-    "sinon-chai": "^2.9.0"
+    "sinon-chai": "^2.9.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-fs": "^2.4.4",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
