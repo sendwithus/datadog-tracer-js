@@ -31,6 +31,7 @@ function bundle (options) {
     entries: options.entry,
     insertGlobalVars: false,
     detectGlobals: false,
+    builtins: false,
     debug: true
   })
     .transform(babel)
