@@ -1,10 +1,10 @@
 'use strict'
+
 module.exports = bundle
 
 const fs = require('fs')
 
 const browserify = require('browserify')
-const babel = require('babelify')
 
 const gulpif = require('gulp-if')
 const sourcemaps = require('gulp-sourcemaps')
@@ -27,50 +27,24 @@ const zopfli = require('node-zopfli')
  */
 function bundle (options) {
   if (!options || !options.entry || !options.target) { throw TypeError('missing options') }
+
   const bundler = browserify({
     entries: options.entry,
-    insertGlobalVars: false,
-    detectGlobals: false,
-    builtins: false,
-    debug: true
+    debug: true,
+    standalone: 'DatadogTracer'
   })
-    .transform(babel)
-    // .external('long')
+    .transform('browserify-shim')
+    .transform('babelify')
+
   return bundler
-    // .plugin(require('browserify-wrap'), {
-    //     // + global object for convenience
-    //     // + undefined var and global strict-mode for uglify
-    //   prefix: '(function(global,undefined){"use strict";',
-    //   suffix: '})(typeof window==="object"&&window||typeof self==="object"&&self||this);'
-    // })
-    // .plugin(require('bundle-collapser/plugin'))
+    .plugin(require('bundle-collapser/plugin'))
     .bundle()
     .pipe(source(options.compress ? 'datadog-tracer.min.js' : 'datadog-tracer.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(
-      gulpif(options.compress, uglify({
-        // mangleProperties: {
-        //   regex: /^_/
-        // },
-        // mangle: {
-        //   eval: true,
-        //   toplevel: false
-        // },
-        // compress: {
-        //   unused: true,
-        //   keep_fargs: false,
-        //   unsafe: true
-        // },
-        // output: {
-        //   max_line_len: 0x7fffffff
-        // }
-      }))
+      gulpif(options.compress, uglify())
     )
-    // .pipe(header(license, {
-    //   date: (new Date()).toUTCString().replace('GMT', 'UTC').toLowerCase(),
-    //   version: pkg.version
-    // }))
     .pipe(sourcemaps.write('.', { sourceRoot: '' }))
     .pipe(vinylfs.dest(options.target))
     .on('log', gutil.log)

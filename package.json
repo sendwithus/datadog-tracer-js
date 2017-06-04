@@ -2,7 +2,8 @@
   "name": "datadog-tracer",
   "version": "0.3.4",
   "description": "OpenTracing Tracer implementation for Datadog in JavaScript",
-  "main": "src/index.js",
+  "main": "index.js",
+  "browser": "browser.js",
   "scripts": {
     "pbjs": "pbjs -t static-module src/propagation/state.proto > src/propagation/state.proto.js",
     "build": "gulp --gulpfile scripts/gulpfile.js",
@@ -18,6 +19,11 @@
     "exclude": [
       "src/**/*.proto.js"
     ]
+  },
+  "browserify-shim": {
+    "long": "global:dcodeIO.Long",
+    "opentracing": "global:opentracing",
+    "protobufjs/minimal": "global:protobuf"
   },
   "repository": {
     "type": "git",
@@ -40,13 +46,13 @@
     "long": "^3.2.0",
     "opentracing": "^0.14.0",
     "performance-now": "^2.1.0",
-    "protobufjs": "~6.7.3"
+    "protobufjs": "^6.7.3"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
     "browserify": "^14.3.0",
-    "browserify-wrap": "^1.0.2",
+    "browserify-shim": "^3.8.14",
     "bundle-collapser": "^1.2.1",
     "chai": "^3.5.0",
     "codecov": "^2.1.0",

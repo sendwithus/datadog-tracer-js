@@ -8,11 +8,13 @@ function defineTask (entry, target) {
     entry: entry,
     target: target
   }))
+
   gulp.task('minify', [ 'bundle' ], bundle.bind(this, {
     entry: entry,
     target: target,
     compress: true
   }))
+
   gulp.task('compress', [ 'minify' ], function (callback) {
     bundle.compress(
       target + '/datadog-tracer.min.js',
@@ -23,6 +25,6 @@ function defineTask (entry, target) {
   defaultTask.push('bundle', 'minify', 'compress')
 }
 
-defineTask('../src/index', '../dist')
+defineTask('../browser', '../dist')
 
 gulp.task('default', defaultTask)
