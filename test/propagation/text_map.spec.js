@@ -24,19 +24,19 @@ describe('Text Map Propagator', () => {
     propagator.inject(spanContext, carrier)
 
     expect(carrier).to.deep.equal({
-      'dd-tracer-traceid': '123',
-      'dd-tracer-spanid': '456',
-      'dd-tracer-sampled': 'true',
-      'dd-baggage-foo': '"bar"'
+      'ot-tracer-traceid': '123',
+      'ot-tracer-spanid': '456',
+      'ot-tracer-sampled': 'true',
+      'ot-baggage-foo': '"bar"'
     })
   })
 
   it('should extract a span context from the carrier', () => {
     const carrier = {
-      'dd-tracer-traceid': '123',
-      'dd-tracer-spanid': '456',
-      'dd-tracer-sampled': 'true',
-      'dd-baggage-foo': '"bar"'
+      'ot-tracer-traceid': '123',
+      'ot-tracer-spanid': '456',
+      'ot-tracer-sampled': 'true',
+      'ot-baggage-foo': '"bar"'
     }
 
     const propagator = new TextMapPropagator()

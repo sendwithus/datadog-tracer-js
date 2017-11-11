@@ -6,13 +6,13 @@ const DatadogSpanContext = require('../span_context')
 class TextMapPropagator {
   inject (spanContext, carrier) {
     Object.assign(carrier, {
-      'dd-tracer-traceid': spanContext.traceId.toString(),
-      'dd-tracer-spanid': spanContext.spanId.toString(),
-      'dd-tracer-sampled': String(spanContext.sampled)
+      'ot-tracer-traceid': spanContext.traceId.toString(),
+      'ot-tracer-spanid': spanContext.spanId.toString(),
+      'ot-tracer-sampled': String(spanContext.sampled)
     })
 
     spanContext.baggageItems && Object.keys(spanContext.baggageItems).forEach(key => {
-      carrier[`dd-baggage-${key}`] = JSON.stringify(spanContext.baggageItems[key])
+      carrier[`ot-baggage-${key}`] = JSON.stringify(spanContext.baggageItems[key])
     })
   }
 
@@ -21,7 +21,7 @@ class TextMapPropagator {
 
     try {
       Object.keys(carrier).forEach(key => {
-        const match = key.match(/^dd-baggage-(.+)$/)
+        const match = key.match(/^ot-baggage-(.+)$/)
 
         if (match) {
           baggageItems[match[1]] = JSON.parse(carrier[key])
@@ -29,9 +29,9 @@ class TextMapPropagator {
       })
 
       return new DatadogSpanContext({
-        traceId: Long.fromString(carrier['dd-tracer-traceid'], true),
-        spanId: Long.fromString(carrier['dd-tracer-spanid'], true),
-        sampled: JSON.parse(carrier['dd-tracer-sampled']),
+        traceId: Long.fromString(carrier['ot-tracer-traceid'], true),
+        spanId: Long.fromString(carrier['ot-tracer-spanid'], true),
+        sampled: JSON.parse(carrier['ot-tracer-sampled']),
         baggageItems
       })
     } catch (e) {
